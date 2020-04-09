@@ -21,6 +21,11 @@ class BotDb:
                       Column('query', String),
                       Column('created_at', DateTime)
                       )
+        token = Table('bot_token', metadata,
+                      Column('id', Integer, primary_key=True, autoincrement=True),
+                      Column('bot_name', String),
+                      Column('token', String)
+                    )
         try:
             metadata.create_all(self.db_engine)
             print("Tables created")
@@ -52,6 +57,18 @@ class BotDb:
             except Exception as e:
                 print(e)
         return res
+
+    def fetch_token(self,bot_name):
+        token = ""
+        db_query = f'SELECT * FROM bot_token WHERE bot_name = "{bot_name}"'
+        try:
+            res = self.db_engine.connect().execute(db_query).first()
+            if res:
+                token = res[2]
+        except Exception as e:
+            print(e)
+
+        return token
 
 
 
