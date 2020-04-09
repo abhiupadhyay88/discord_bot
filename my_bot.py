@@ -6,11 +6,10 @@ from bot_db import BotDb
 print('Connecting to Database..')
 try:
     db_object = BotDb()
+    TOKEN = db_object.fetch_token('search_bot')
 except Exception as e:
     print(e)
     print('Some error in initializing database.')
-
-TOKEN = 'Njk3MTY4NTc4NDYxNDMzODY3.XozXKQ.aa7VSyOingo0y99qQy6tFtUIBno'
 
 bot = commands.Bot(command_prefix='!')
 
