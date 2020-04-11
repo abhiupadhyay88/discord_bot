@@ -50,7 +50,7 @@ class BotDb:
     def fetch_history(self,username,query):
         """fetch recent history from database"""
         res = []
-        db_query = f"SELECT * FROM history WHERE username = '{username}' and query like \'%{query}%\' ORDER BY created_at DESC LIMIT 5;"
+        db_query = f"SELECT * FROM history WHERE username = '{username}' and query like \'%%{query}%%\' ORDER BY created_at DESC LIMIT 5;"
         # print(db_query)
         with self.db_engine.connect() as connection:
             try:
