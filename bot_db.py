@@ -8,7 +8,9 @@ class BotDb:
 
     db_engine = None
     def __init__(self, dbname='bot_db'):
-        engine_url = 'sqlite:///db.sqlite3'
+        # engine_url = 'postgres:///db.sqlite3'
+        """postgres connection url"""
+        engine_url = 'postgres://postgres:pgres@127.0.0.1:5432/postgres'
         self.db_engine = create_engine(engine_url)
 
     """Function to create db tables"""
@@ -36,7 +38,7 @@ class BotDb:
     def insert_history(self,username,query):
         """insert search history in database"""
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        db_query = f'INSERT into history (username,query,created_at) VALUES ("{username}","{query}","{now}");'
+        db_query = f"INSERT into history (username,query,created_at) VALUES ('{username}','{query}','{now}');"
         # print(db_query)
         with self.db_engine.connect() as connection:
             try:
@@ -48,7 +50,7 @@ class BotDb:
     def fetch_history(self,username,query):
         """fetch recent history from database"""
         res = []
-        db_query = f'SELECT * FROM history WHERE username = "{username}" and query like \'%{query}%\' ORDER BY created_at DESC LIMIT 5;'
+        db_query = f"SELECT * FROM history WHERE username = '{username}' and query like \'%{query}%\' ORDER BY created_at DESC LIMIT 5;"
         # print(db_query)
         with self.db_engine.connect() as connection:
             try:
@@ -60,7 +62,7 @@ class BotDb:
 
     def fetch_token(self,bot_name):
         token = ""
-        db_query = f'SELECT * FROM bot_token WHERE bot_name = "{bot_name}"'
+        db_query = f"SELECT * FROM bot_token WHERE bot_name = '{bot_name}'"
         try:
             res = self.db_engine.connect().execute(db_query).first()
             if res:
